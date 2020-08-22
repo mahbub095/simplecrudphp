@@ -6,7 +6,17 @@ if('seed'== $task){
     seed(DB_NAME);
     $info = "Seeding is Completed";
 }
+ 
+if ( isset( $_POST['submit'] ) ) {
+    $fname = filter_input( INPUT_POST, 'fname', FILTER_SANITIZE_STRING );
+    $lname = filter_input( INPUT_POST, 'lname', FILTER_SANITIZE_STRING );
+    $roll  = filter_input( INPUT_POST, 'roll', FILTER_SANITIZE_STRING );
+    if ( $fname != '' && $lname != '' && $roll != '' ) {
+        addStudent( $fname, $lname, $roll );
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,10 +47,35 @@ if('seed'== $task){
                    echo"<p>{$info}</p>";
                }
                ?>
-
+            
                </div>
             </div>
-		
+            <?php if('report' == $task): ?>
+            <div class="row">
+            <div class="column column-60 column-offset-20">
+                <?php generateReport(); ?>
+            </div>
+
+            </div>
+            <?php endif;?>
+
+            <?php if ( 'add' == $task ): ?>
+        <div class="row">
+            <div class="column column-60 column-offset-20">
+                <form action="/index.php?task=add" method="POST">
+                    <label for="fname">First Name</label>
+                    <input type="text" name="fname" id="fname" value=" ">
+                    <label for="lname">Last Name</label>
+                    <input type="text" name="lname" id="lname" value=" ">
+                    <label for="roll">Roll</label>
+                    <input type="number" name="roll" id="roll" value=" ">
+                    <button type="submit" class="button-primary" name="submit">Save</button>
+                </form>
+            </div>
         </div>
+         <?php endif;?>
+		  
+        </div>
+       
     </body>
 </html>
